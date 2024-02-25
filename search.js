@@ -8,14 +8,30 @@ document.getElementById('find').addEventListener('click', () => {
     let numOfResults = 0
     let index = 0
     if (isNaN(input)) {
-        input = input.toLowerCase()
-        for (let i = 0; i < productNames.length; i++) {
+        let arrayInput = input.toLowerCase().split(" ")
+        
+        for (let a = 0; a < arrayInput.length; a++) {
+            arrayInput[a] = arrayInput[a].charAt(0).toUpperCase() + arrayInput[a].slice(1);
+        }
 
-            if (productNames[i][1].toLowerCase().includes(input)) {
-                console.log(productNames[i])
-                numOfResults++
+        for (let i = 0; i < productNames.length; i++) {
+            if (numOfResults > 20) {break}
+            for (let j = 0; j < arrayInput.length; j++) {
+                if (!productNames[i][1].includes(arrayInput[j])) {
+                    break
+                }
+                if (j == arrayInput.length - 1) {
+                    index = i
+                    const product = document.createElement('item-card')
+                    const image = document.createElement('product-image')
+                    product.innerHTML = `<span style="color:red">${productNames[index][0]}</span> - ${productNames[index][1]}`
+                    product.appendChild(image)
+                    productlist.appendChild(product)
+                    const images = document.getElementsByTagName('product-image')
+                    images[numOfResults].style.backgroundImage = `url("./bulkbarnimages/(${productNames[index][0]}) ${productNames[index][1]}.jpg")`
+                    numOfResults++
+                }
             }
-            if (numOfResults > 5) break
         }
     }
     
@@ -34,14 +50,14 @@ document.getElementById('find').addEventListener('click', () => {
         productlist.appendChild(product)
         return
     }
+    else if (!isNaN(input)) {
     const product = document.createElement('item-card')
     const image = document.createElement('product-image')
     product.innerHTML = `<span style="color:red">${productNames[index][0]}</span> - ${productNames[index][1]}`
     product.appendChild(image)
     productlist.appendChild(product)
     const images = document.getElementsByTagName('product-image')
-    let background = `url("./bulkbarnimages/(${productNames[index][0]}) ${productNames[index][1]}.jpg")`
-    console.log(background)
-    images[0].style.backgroundImage = background
+    images[0].style.backgroundImage = `url("./bulkbarnimages/(${productNames[index][0]}) ${productNames[index][1]}.jpg")`
+    }
     
 })
